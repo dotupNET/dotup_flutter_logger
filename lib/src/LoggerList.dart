@@ -30,89 +30,49 @@ class _LoggerListState extends State<LoggerList> {
   Widget build(BuildContext context) {
     return ChangeNotifierConsumer<LoggerListController>(
       builder: (context, controller, child) {
-        return  Stack(
-            children: [
-              if (isLoading == true) const LinearProgressIndicator(),
-              InfiniteScrollFuture(
-                // scrollController: _scrollController,
-                onReloadRequest: () async {
+        return Stack(
+          children: [
+            if (isLoading == true) const LinearProgressIndicator(),
+            InfiniteScrollFuture(
+              // scrollController: _scrollController,
+              onReloadRequest: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await controller.loadMore();
+                if (mounted) {
                   setState(() {
-                    isLoading = true;
+                    isLoading = false;
                   });
-                  await controller.loadMore();
-                  if (mounted) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-                },
-                builder: (context, scrollController) {
-                  return RefreshIndicator(
-                    onRefresh: () async => await controller.loadMore(),
-                    child: ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(), controller: scrollController,
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          color: Colors.grey.shade500,
-                          thickness: 1,
-                        );
-                      },
-                      // dense:true,
-                      padding: const EdgeInsets.all(0),
-                      reverse: false,
-                      shrinkWrap: false,
-                      itemBuilder: (_, int index) {
-                        return LoggerRow(logEntry: controller.entries[index]);
-                      },
-                      itemCount: controller.entries.length,
-                    ),
-                  );
-                },
-              ),
-            ],
-    
+                }
+              },
+              builder: (context, scrollController) {
+                return RefreshIndicator(
+                  onRefresh: () async => await controller.loadMore(),
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(), controller: scrollController,
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: Colors.grey.shade500,
+                        thickness: 1,
+                      );
+                    },
+                    // dense:true,
+                    padding: const EdgeInsets.all(0),
+                    reverse: false,
+                    shrinkWrap: false,
+                    itemBuilder: (_, int index) {
+                      return LoggerRow(logEntry: controller.entries[index]);
+                    },
+                    itemCount: controller.entries.length,
+                  ),
+                );
+              },
+            ),
+          ],
         );
       },
       provider: widget.loggerListController,
     );
-
-    // return Flexible(
-    //   flex: 1,
-    //   child: ListView.separated(
-    //     separatorBuilder: (context, index) {
-    //       return Divider(
-    //         color: Colors.grey.shade500,
-    //         thickness: 1,
-    //       );
-    //     },
-    //     // dense:true,
-    //     padding: EdgeInsets.all(0),
-    //     reverse: false,
-    //     shrinkWrap: false,
-    //     itemBuilder: (_, int index) {
-    //       return LoggerRow(logEntry: widget.loggerLiveController.entries[index]);
-    //     },
-    //     itemCount: widget.loggerLiveController.entries.length,
-    //   ),
-    // );
-    // return Flexible(
-    //   flex: 1,
-    //   child: ListView.separated(
-    //     separatorBuilder: (context, index) {
-    //       return Divider(
-    //         color: Colors.grey.shade500,
-    //         thickness: 1,
-    //       );
-    //     },
-    //     // dense:true,
-    //     padding: EdgeInsets.all(0),
-    //     reverse: false,
-    //     shrinkWrap: false,
-    //     itemBuilder: (_, int index) {
-    //       return LoggerRow(logEntry: loggerLiveController.entries[index]);
-    //     },
-    //     itemCount: loggerLiveController.entries.length,
-    //   ),
-    // );
   }
 }

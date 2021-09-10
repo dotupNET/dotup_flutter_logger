@@ -17,9 +17,11 @@ class LoggerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      horizontalTitleGap: -10,
-      dense: false,
-      contentPadding: EdgeInsets.only(left: 4, right: 4),
+      // horizontalTitleGap: -10,
+      dense: true,
+         contentPadding: EdgeInsets.symmetric(horizontal: 10),
+      minLeadingWidth: 10,
+      // contentPadding: EdgeInsets.only(left: 4, right: 4),
       leading: getLogLevelIcon(logEntry),
       title: _getTitle(logEntry),
       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
@@ -61,60 +63,8 @@ class LoggerRow extends StatelessWidget {
       maxLines: 1,
       softWrap: false,
     );
-    // return Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     Flexible(
-    //       child: Wrap(
-    //         spacing: 8,
-    //         runSpacing: 8,
-    //         runAlignment: WrapAlignment.spaceBetween,
-    //         children: [
-    //           Text(title)
-    //         ],
-    //       ),
-    //     ),
-    //   ],
-    // );
   }
 
-  // Widget _getSubtitleRow2(BuildContext context) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     crossAxisAlignment: CrossAxisAlignment.end,
-  //     children: [
-  //       Flexible(
-  //         child: Wrap(
-  //           spacing: 8,
-  //           runSpacing: 8,
-  //           runAlignment: WrapAlignment.spaceBetween,
-  //           // crossAxisAlignment: CrossAxisAlignment.end,
-  //           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             getColoredContactChip(
-  //               context,
-  //               widget.task.contact,
-  //               // () {},
-  //             ),
-  //             // SizedBox(
-  //             //   width: 8,
-  //             // ),
-  //             getColoredProjectChip(
-  //               context,
-  //               widget.task.project,
-  //             ),
-  //             // getColorDecoratedTextContainerRow(
-  //             //   widget.timeTrackingModel.project?.name,
-  //             //   AppTheme.grey,
-  //             //   // () {},
-  //             // ),
-  //           ],
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
   getLogLevelIcon(LogEntry logEntry) {
     if (logEntry.logLevel == LogLevel.Debug) {
       return Icon(Icons.ac_unit, color: _debugColor);

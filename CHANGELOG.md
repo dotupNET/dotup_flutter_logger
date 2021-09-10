@@ -21,3 +21,7 @@
 ## 0.2.1
 
 * Fix: LoggerList with InfiniteScrollFuture
+
+## 0.3.0
+
+* SqfLite integration
