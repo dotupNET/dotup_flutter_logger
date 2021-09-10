@@ -9,3 +9,7 @@
 ## 0.1.2
 
 * update to dotup_dart_logger: ^0.1.7
+
+## 0.1.3
+
+* LoggerList with InfiniteScrollFuture

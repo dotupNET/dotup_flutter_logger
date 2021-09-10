@@ -1,18 +1,18 @@
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:dotup_flutter_logger/src/LoggerList.dart';
-import 'package:dotup_flutter_logger/src/LoggerLiveController.dart';
+import 'package:dotup_flutter_logger/src/LoggerListController.dart';
 import 'package:flutter/material.dart';
 
 import 'LogLevelFilter.dart';
 
 class LoggerView extends StatefulWidget {
-  late final LoggerLiveController loggerListController;
+  late final LoggerListController loggerListController;
 
   LoggerView({
     Key? key,
-    LoggerLiveController? loggerListController,
+    LoggerListController? loggerListController,
   }) : super(key: key) {
-    this.loggerListController = loggerListController ?? LoggerLiveController(20);
+    this.loggerListController = loggerListController ?? LoggerListController(20);
   }
 
   @override
@@ -20,7 +20,7 @@ class LoggerView extends StatefulWidget {
 }
 
 class _LoggerViewState extends State<LoggerView> {
-  final LoggerLiveController loggerListController;
+  final LoggerListController loggerListController;
   late final List<LogLevelFilter> logLevelStates;
 
   _LoggerViewState(this.loggerListController) {
@@ -90,7 +90,7 @@ class _LoggerViewState extends State<LoggerView> {
             ),
           ],
         ),
-        LoggerList(loggerLiveController: loggerListController),
+        LoggerList(loggerListController: loggerListController),
       ],
     );
   }

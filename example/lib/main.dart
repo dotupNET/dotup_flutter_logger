@@ -60,11 +60,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final LoggerLiveController controller;
+  late final LoggerListController controller;
 
   @override
   void initState() {
-    controller = LoggerLiveController(20);
+    controller = LoggerListController(20);
     super.initState();
   }
 
