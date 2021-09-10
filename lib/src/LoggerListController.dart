@@ -1,4 +1,5 @@
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
+import 'package:flutter/widgets.dart';
 
 import 'ILoggerController.dart';
 import 'ListStack.dart';
@@ -6,39 +7,46 @@ import 'LogLevelFilter.dart';
 
 typedef LogEntryReader = Future<List<LogEntry>> Function(int currentItemsCount, int parialItemsCount);
 
-class LoggerListController extends ILoggerController {
+class LoggerListController with ChangeNotifier {
   bool liveMode = true;
   LogLevel? _levelFilter;
   final LogEntryReader logEntryReader;
   final int pageSize;
+  late final ListStack<LogEntry> _entries;
+  late final CallbackLogWriter logWriter;
 
   LoggerListController({
     required int stackSize,
     required this.logEntryReader,
     this.pageSize = 50,
   }) {
+    _entries = ListStack(stackSize);
     logWriter = CallbackLogWriter(LogLevel.All, (newEntry) {
-      entries.add(newEntry);
+      _entries.add(newEntry);
       if (liveMode) notifyListeners();
     });
-    entries = ListStack(stackSize);
     LoggerManager.addLogWriter(logWriter);
   }
 
-  @override
   set stackSize(int value) {
-    entries.setSize(value);
+    _entries.setSize(value);
+    if (liveMode) notifyListeners();
   }
 
-  @override
   int get stackSize {
-    return entries.size;
+    return _entries.size;
+  }
+
+  List<LogEntry> get entries {
+    final filter = _levelFilter ?? LogLevel.All;
+    final filtered = _entries.where((element) => filter.isLevel(element.logLevel)).toList();
+    return filtered;
   }
 
   @override
   Future<void> setLiveMode(bool isLive) async {
-    entries.clear();
-    entries.changeCheckSize(isLive);
+    _entries.clear();
+    _entries.changeCheckSize(isLive);
     liveMode = isLive;
     await loadMore();
     notifyListeners();
@@ -62,6 +70,7 @@ class LoggerListController extends ILoggerController {
       },
     );
     logWriter.logLevel = _levelFilter!;
+    if (liveMode) notifyListeners();
   }
 
   @override
@@ -74,9 +83,9 @@ class LoggerListController extends ILoggerController {
     if (liveMode == true) {
       return;
     }
-    final result = await logEntryReader(entries.length, pageSize);
+    final result = await logEntryReader(_entries.length, pageSize);
     if (result.isNotEmpty) {
-      entries.addAll(result);
+      _entries.addAll(result);
       notifyListeners();
     }
   }
