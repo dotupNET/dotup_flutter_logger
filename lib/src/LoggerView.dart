@@ -11,8 +11,11 @@ class LoggerView extends StatefulWidget {
   LoggerView({
     Key? key,
     LoggerListController? loggerListController,
-  }) : super(key: key) {
-    this.loggerListController = loggerListController ?? LoggerListController(20);
+    LogEntryReader? logEntryReader,
+  })  : assert(loggerListController != null || logEntryReader != null),
+        super(key: key) {
+    this.loggerListController =
+        loggerListController ?? LoggerListController(logEntryReader: logEntryReader!, stackSize: 50);
   }
 
   @override

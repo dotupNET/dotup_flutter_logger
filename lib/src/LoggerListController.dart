@@ -4,18 +4,20 @@ import 'ILoggerController.dart';
 import 'ListStack.dart';
 import 'LogLevelFilter.dart';
 
+typedef LogEntryReader = Future<List<LogEntry>> Function(int currentItemsCount, int parialItemsCount);
+
 class LoggerListController extends ILoggerController {
-  LogLevel _logLevel = LogLevel.All;
-
   bool _notify = true;
-
-  late final ListStack<LogEntry> entries;
-  late final CallbackLogWriter logWriter;
-
   LogLevel? _levelFilter;
+  final LogEntryReader logEntryReader;
+  final int pageSize;
 
-  LoggerListController(int stackSize) {
-    logWriter = CallbackLogWriter(_logLevel, (newEntry) {
+  LoggerListController({
+    required int stackSize,
+    required this.logEntryReader,
+    this.pageSize = 50,
+  }) {
+    logWriter = CallbackLogWriter(LogLevel.All, (newEntry) {
       entries.add(newEntry);
       if (_notify) notifyListeners();
     });
@@ -23,14 +25,17 @@ class LoggerListController extends ILoggerController {
     LoggerManager.addLogWriter(logWriter);
   }
 
+  @override
   set stackSize(int value) {
     entries.length = value;
   }
 
+  @override
   int get stackSize {
     return entries.size;
   }
 
+  @override
   void filter(List<LogLevelFilter> logLevelStates) {
     _levelFilter = logLevelStates
         .where(
@@ -52,7 +57,6 @@ class LoggerListController extends ILoggerController {
 
   @override
   void toggleNotifier() {
-    print('object');
     _notify = (!_notify);
   }
 
@@ -65,5 +69,11 @@ class LoggerListController extends ILoggerController {
     LoggerManager.removeLogWriter(logWriter);
   }
 
-  loadMore() {}
+  Future<void> loadMore() async {
+    final result = await logEntryReader(entries.length, pageSize);
+    if (result.isNotEmpty) {
+      entries.addAll(result);
+      notifyListeners();
+    }
+  }
 }

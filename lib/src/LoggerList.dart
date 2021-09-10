@@ -5,9 +5,9 @@ import 'LoggerListController.dart';
 import 'LoggerRow.dart';
 
 class LoggerList extends StatefulWidget {
-  late final LoggerListController loggerListController;
+  final LoggerListController loggerListController;
 
-  LoggerList({
+  const LoggerList({
     Key? key,
     required this.loggerListController,
   }) : super(key: key);
@@ -47,6 +47,7 @@ class _LoggerListState extends State<LoggerList> {
             },
             builder: (context, scrollController) {
               return ListView.separated(
+                controller: scrollController,
                 separatorBuilder: (context, index) {
                   return Divider(
                     color: Colors.grey.shade500,

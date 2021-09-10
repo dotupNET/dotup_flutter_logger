@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 void main() {
   final testLogger = Logger('test');
   bool toggle = false;
-  final t = Timer.periodic(Duration(seconds: 1), (_) {
+  final t = Timer.periodic(const Duration(seconds: 1), (_) {
     toggle = !toggle;
     testLogger.debug('Debug');
     testLogger.error(UnimplementedError());
@@ -36,13 +36,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'dotup.de Logger Demo'),
+      home: const MyHomePage(title: 'dotup.de Logger Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    controller = LoggerListController(20);
+    controller = LoggerListController(stackSize: 50, logEntryReader: logEntryReader);
     super.initState();
   }
 
@@ -95,8 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
         tooltip: 'Pause/Resume',
-        child: controller.isNotifing ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+        child: controller.isNotifing ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<List<LogEntry>> logEntryReader(int currentItemsCount, int parialItemsCount) async {
+    return [];
   }
 }
