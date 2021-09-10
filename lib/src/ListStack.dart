@@ -3,11 +3,14 @@ import 'dart:collection';
 class ListStack<T> with ListMixin<T> {
   late final List<T> _items = [];
   int _size;
+
+  bool _checkSize = true;
+
   int get size => _size;
 
   ListStack(this._size);
 
-  // @override
+  @override
   int get length => _items.length;
 
   @override
@@ -17,7 +20,7 @@ class ListStack<T> with ListMixin<T> {
 
   @override
   void add(T element) {
-    if (_items.length >= _size) {
+    if (_checkSize && _items.length > _size) {
       _items.removeLast();
     }
     _items.insert(0, element);
@@ -32,11 +35,19 @@ class ListStack<T> with ListMixin<T> {
     }
   }
 
-  @override
-  set length(int newLength) {
-    _size = newLength;
+  void setSize(int newSize) {
+    _size = newSize;
     while (_items.length > _size) {
       _items.removeLast();
     }
+  }
+
+  void changeCheckSize(bool value) {
+    _checkSize = value;
+  }
+
+  @override
+  set length(int newLength) {
+    _items.length = newLength;
   }
 }

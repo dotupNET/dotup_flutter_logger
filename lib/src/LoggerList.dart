@@ -28,45 +28,50 @@ class _LoggerListState extends State<LoggerList> {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Stack(
-        children: [
-          if (isLoading == true) LinearProgressIndicator(),
-          InfiniteScrollFuture(
-            // scrollController: _scrollController,
-            onReloadRequest: () async {
-              setState(() {
-                isLoading = true;
-              });
-              await widget.loggerListController.loadMore();
-              if (mounted) {
-                setState(() {
-                  isLoading = false;
-                });
-              }
-            },
-            builder: (context, scrollController) {
-              return ListView.separated(
-                controller: scrollController,
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    color: Colors.grey.shade500,
-                    thickness: 1,
+    return ChangeNotifierConsumer<LoggerListController>(
+      builder: (context, controller, child) {
+        return Flexible(
+          child: Stack(
+            children: [
+              if (isLoading == true) const LinearProgressIndicator(),
+              InfiniteScrollFuture(
+                // scrollController: _scrollController,
+                onReloadRequest: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await controller.loadMore();
+                  if (mounted) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                },
+                builder: (context, scrollController) {
+                  return ListView.separated(
+                    controller: scrollController,
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: Colors.grey.shade500,
+                        thickness: 1,
+                      );
+                    },
+                    // dense:true,
+                    padding: const EdgeInsets.all(0),
+                    reverse: false,
+                    shrinkWrap: false,
+                    itemBuilder: (_, int index) {
+                      return LoggerRow(logEntry: controller.entries[index]);
+                    },
+                    itemCount: controller.entries.length,
                   );
                 },
-                // dense:true,
-                padding: EdgeInsets.all(0),
-                reverse: false,
-                shrinkWrap: false,
-                itemBuilder: (_, int index) {
-                  return LoggerRow(logEntry: widget.loggerListController.entries[index]);
-                },
-                itemCount: widget.loggerListController.entries.length,
-              );
-            },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
+      provider: widget.loggerListController,
     );
 
     // return Flexible(

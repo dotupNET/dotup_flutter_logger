@@ -10,7 +10,7 @@ abstract class ILoggerController with ChangeNotifier {
 
   set stackSize(int value);
   int get stackSize;
-  bool get isNotifing;
+  // bool get isNotifing;
   void filter(List<LogLevelFilter> logLevelStates);
-  void toggleNotifier();
+  Future<void> setLiveMode(bool isLive);
 }

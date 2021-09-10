@@ -19,19 +19,11 @@ class LoggerView extends StatefulWidget {
   }
 
   @override
-  _LoggerViewState createState() => _LoggerViewState(loggerListController);
+  _LoggerViewState createState() => _LoggerViewState();
 }
 
 class _LoggerViewState extends State<LoggerView> {
-  final LoggerListController loggerListController;
   late final List<LogLevelFilter> logLevelStates;
-
-  _LoggerViewState(this.loggerListController) {
-    loggerListController.addListener(() {
-      setState(() {});
-    });
-    // _stackSize = loggerListController.stackSize;
-  }
 
   @override
   void initState() {
@@ -55,7 +47,7 @@ class _LoggerViewState extends State<LoggerView> {
         onChanged: (bool? value) {
           setState(() {
             e.state = !e.state;
-            loggerListController.filter(logLevelStates);
+            widget.loggerListController.filter(logLevelStates);
           });
         },
         value: e.state,
@@ -69,7 +61,7 @@ class _LoggerViewState extends State<LoggerView> {
           children: [
             Expanded(
               child: ExpansionTile(
-                title: Text('LogLevel filter'),
+                title: const Text('LogLevel filter'),
                 children: menuItems,
               ),
             ),
@@ -80,12 +72,12 @@ class _LoggerViewState extends State<LoggerView> {
                 }).toList(),
                 onChanged: (newValue) {
                   setState(() {
-                    loggerListController.stackSize = newValue!;
+                    widget.loggerListController.stackSize = newValue!;
                   });
                 },
-                value: loggerListController.stackSize,
+                value: widget.loggerListController.stackSize,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
@@ -93,7 +85,7 @@ class _LoggerViewState extends State<LoggerView> {
             ),
           ],
         ),
-        LoggerList(loggerListController: loggerListController),
+        LoggerList(loggerListController: widget.loggerListController),
       ],
     );
   }

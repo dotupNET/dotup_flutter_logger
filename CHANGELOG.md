@@ -17,3 +17,7 @@
 ## 0.2.0
 
 * Fix: LoggerList with InfiniteScrollFuture
+
+## 0.2.1
+
+* Fix: LoggerList with InfiniteScrollFuture

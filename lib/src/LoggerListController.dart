@@ -7,7 +7,7 @@ import 'LogLevelFilter.dart';
 typedef LogEntryReader = Future<List<LogEntry>> Function(int currentItemsCount, int parialItemsCount);
 
 class LoggerListController extends ILoggerController {
-  bool _notify = true;
+  bool liveMode = true;
   LogLevel? _levelFilter;
   final LogEntryReader logEntryReader;
   final int pageSize;
@@ -19,7 +19,7 @@ class LoggerListController extends ILoggerController {
   }) {
     logWriter = CallbackLogWriter(LogLevel.All, (newEntry) {
       entries.add(newEntry);
-      if (_notify) notifyListeners();
+      if (liveMode) notifyListeners();
     });
     entries = ListStack(stackSize);
     LoggerManager.addLogWriter(logWriter);
@@ -27,12 +27,21 @@ class LoggerListController extends ILoggerController {
 
   @override
   set stackSize(int value) {
-    entries.length = value;
+    entries.setSize(value);
   }
 
   @override
   int get stackSize {
     return entries.size;
+  }
+
+  @override
+  Future<void> setLiveMode(bool isLive) async {
+    entries.clear();
+    entries.changeCheckSize(isLive);
+    liveMode = isLive;
+    await loadMore();
+    notifyListeners();
   }
 
   @override
@@ -56,20 +65,15 @@ class LoggerListController extends ILoggerController {
   }
 
   @override
-  void toggleNotifier() {
-    _notify = (!_notify);
-  }
-
-  @override
-  bool get isNotifing => _notify;
-
-  @override
   void dispose() {
     super.dispose();
     LoggerManager.removeLogWriter(logWriter);
   }
 
   Future<void> loadMore() async {
+    if (liveMode == true) {
+      return;
+    }
     final result = await logEntryReader(entries.length, pageSize);
     if (result.isNotEmpty) {
       entries.addAll(result);

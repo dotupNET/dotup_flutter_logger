@@ -15,10 +15,12 @@ void main() {
     if (toggle) testLogger.info('INFO');
     testLogger.warn('Holy');
   });
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -89,13 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
         loggerListController: controller,
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            controller.toggleNotifier();
-          });
+        onPressed: () async {
+          await controller.setLiveMode(!controller.liveMode);
+          // setState(() {});
         },
         tooltip: 'Pause/Resume',
-        child: controller.isNotifing ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
+        child: controller.liveMode ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
