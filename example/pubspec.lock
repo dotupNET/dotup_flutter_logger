@@ -77,7 +77,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.3.1"
   dotup_flutter_widgets:
     dependency: transitive
     description:

@@ -1,7 +1,6 @@
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:flutter/widgets.dart';
 
-import 'ILoggerController.dart';
 import 'ListStack.dart';
 import 'LogLevelFilter.dart';
 
@@ -43,7 +42,6 @@ class LoggerListController with ChangeNotifier {
     return filtered;
   }
 
-  @override
   Future<void> setLiveMode(bool isLive) async {
     _entries.clear();
     _entries.changeCheckSize(isLive);
@@ -52,8 +50,7 @@ class LoggerListController with ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void filter(List<LogLevelFilter> logLevelStates) {
+  void setFilter(List<LogLevelFilter> logLevelStates) {
     _levelFilter = logLevelStates
         .where(
           (element) => element.state,

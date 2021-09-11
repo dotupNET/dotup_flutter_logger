@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ));
 
               if (newSettings != null) {
-                controller.filter(newSettings.logLevelStates);
+                controller.setFilter(newSettings.logLevelStates);
                 controller.stackSize = newSettings.pageSize;
                 settings = newSettings;
               }

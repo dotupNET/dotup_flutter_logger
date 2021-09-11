@@ -25,3 +25,7 @@
 ## 0.3.0
 
 * SqfLite integration
+
+## 0.3.1
+
+* LoggerScaffold
