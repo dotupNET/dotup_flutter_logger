@@ -12,9 +12,12 @@ class LoggerScaffold extends StatefulWidget {
   const LoggerScaffold({
     Key? key,
     required this.title,
+    this.appBar,
   }) : super(key: key);
+
   final String title;
 
+  final AppBar? appBar;
   @override
   _LoggerScaffoldState createState() => _LoggerScaffoldState();
 }
@@ -33,33 +36,34 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Add entry',
-            onPressed: () async {
-              logger.debug('Debug');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Einstellungen',
-            onPressed: () async {
-              final newSettings = await Navigator.of(context).push<LoggerListSettings>(MaterialPageRoute(
-                builder: (context) => LoggerListSettingsPage(settings: settings),
-              ));
+      appBar: widget.appBar ??
+          AppBar(
+            title: Text(widget.title),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add),
+                tooltip: 'Add entry',
+                onPressed: () async {
+                  logger.debug('Debug');
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                tooltip: 'Einstellungen',
+                onPressed: () async {
+                  final newSettings = await Navigator.of(context).push<LoggerListSettings>(MaterialPageRoute(
+                    builder: (context) => LoggerListSettingsPage(settings: settings),
+                  ));
 
-              if (newSettings != null) {
-                controller.setFilter(newSettings.logLevelStates);
-                controller.stackSize = newSettings.pageSize;
-                settings = newSettings;
-              }
-            },
+                  if (newSettings != null) {
+                    controller.setFilter(newSettings.logLevelStates);
+                    controller.stackSize = newSettings.pageSize;
+                    settings = newSettings;
+                  }
+                },
+              ),
+            ],
           ),
-        ],
-      ),
       body: Center(
         child: LoggerView(
           loggerListController: controller,
@@ -72,7 +76,7 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
         },
         tooltip: 'Pause/Resume',
         child: controller.liveMode ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
-      ), 
+      ),
     );
   }
 

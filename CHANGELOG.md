@@ -29,3 +29,7 @@
 ## 0.3.1
 
 * LoggerScaffold
+
+## 0.3.2
+
+* LoggerScaffold AppBar
