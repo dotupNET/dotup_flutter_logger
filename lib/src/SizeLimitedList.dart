@@ -1,14 +1,17 @@
 import 'dart:collection';
 
-class ListStack<T> with ListMixin<T> {
+class SizeLimitedList<T> with ListMixin<T> {
+  SizeLimitedList({required int size, reverse = false})
+      : _size = size,
+        _reverse = reverse;
+
   late final List<T> _items = [];
   int _size;
+  final bool _reverse;
 
   bool _checkSize = true;
 
   int get size => _size;
-
-  ListStack(this._size);
 
   @override
   int get length => _items.length;
@@ -21,9 +24,13 @@ class ListStack<T> with ListMixin<T> {
   @override
   void add(T element) {
     if (_checkSize && _items.length > _size) {
-      _items.removeLast();
+     _reverse == true ? _items.removeLast(): _items.removeAt(0);
     }
-    _items.insert(0, element);
+    if (_reverse) {
+      _items.insert(0, element);
+    } else {
+      _items.add(element);
+    }
   }
 
   @override

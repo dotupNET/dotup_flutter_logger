@@ -18,6 +18,7 @@ class LoggerScaffold extends StatefulWidget {
   final String title;
 
   final AppBar? appBar;
+  
   @override
   _LoggerScaffoldState createState() => _LoggerScaffoldState();
 }
@@ -64,10 +65,16 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
               ),
             ],
           ),
-      body: Center(
-        child: LoggerView(
-          loggerListController: controller,
-        ),
+      body: Column(
+        children: [
+           Expanded(
+             flex: 1,
+             child: LoggerView(
+                loggerListController: controller,
+              ),
+           ),
+  
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -82,6 +89,7 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
 
   Future<List<LogEntry>> logEntryReader(int currentItemsCount, int partialItemsCount) async {
     final repo = SqfLiteLoggerManager.getLoggerRepository();
+    // sort asc because LimititedList is reversed !
     final result = await repo.readPaged(skip: currentItemsCount, take: partialItemsCount, orderBy: 'timeStamp desc');
     return result?.map((e) => LoggerMapper.toLogEntry(e)).toList() ?? [];
   }

@@ -57,11 +57,11 @@ class _LoggerListSettingsPageState extends State<LoggerListSettingsPage> {
         text: e.value.name,
         onChanged: (bool? value) {
           setState(() {
-            e.state = !e.state;
+            e.levelEnabled = !e.levelEnabled;
             // widget.loggerListController.filter(logLevelStates);
           });
         },
-        value: e.state,
+        value: e.levelEnabled,
         dense: true,
         color: color,
       );
@@ -71,7 +71,7 @@ class _LoggerListSettingsPageState extends State<LoggerListSettingsPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: const Icon(Icons.check),
             tooltip: 'Änderungen übernehmen',
             onPressed: () {
               Navigator.of(context).pop(LoggerListSettings(logLevelStates: logLevelStates, pageSize: pageSize));

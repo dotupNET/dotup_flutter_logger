@@ -30,6 +30,6 @@ class _LoggerViewState extends State<LoggerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: LoggerList(loggerListController: widget.loggerListController));
+    return LoggerList(loggerListController: widget.loggerListController);
   }
 }

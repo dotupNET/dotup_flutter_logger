@@ -2,6 +2,7 @@ import 'package:dotup_flutter_widgets/dotup_flutter_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'LoggerListController.dart';
+import 'LoggerListTile.dart';
 import 'LoggerRow.dart';
 
 class LoggerList extends StatefulWidget {
@@ -30,6 +31,29 @@ class _LoggerListState extends State<LoggerList> {
   Widget build(BuildContext context) {
     return ChangeNotifierConsumer<LoggerListController>(
       builder: (context, controller, child) {
+        // return RefreshIndicator(
+        //           onRefresh: () async => await controller.loadMore(),
+        //           child: ListView.separated(
+
+        //             physics: const AlwaysScrollableScrollPhysics(),
+        //             // controller: scrollController,
+        //             separatorBuilder: (context, index) {
+        //               return Divider(
+        //                 height: 1,
+        //                 color: Colors.grey.shade500,
+        //                 thickness: 1,
+        //               );
+        //             },
+        //             // dense:true,
+        //             padding: const EdgeInsets.all(0),
+        //             reverse: false,
+        //             shrinkWrap: false,
+        //             itemBuilder: (_, int index) {
+        //               return LoggerListTile(logEntry: controller.entries[index]);
+        //             },
+        //             itemCount: controller.entries.length,
+        //           ),
+        //         );
         return Stack(
           children: [
             if (isLoading == true) const LinearProgressIndicator(),
@@ -47,13 +71,16 @@ class _LoggerListState extends State<LoggerList> {
                 }
               },
               builder: (context, scrollController) {
+                final _entries = controller.entries;
                 return RefreshIndicator(
                   onRefresh: () async => await controller.loadMore(),
                   child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(), controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: scrollController,
                     separatorBuilder: (context, index) {
                       return Divider(
                         color: Colors.grey.shade500,
+                        height: 1,
                         thickness: 1,
                       );
                     },
@@ -62,9 +89,9 @@ class _LoggerListState extends State<LoggerList> {
                     reverse: false,
                     shrinkWrap: false,
                     itemBuilder: (_, int index) {
-                      return LoggerRow(logEntry: controller.entries[index]);
+                      return LoggerListTile(logEntry: _entries[index]);
                     },
-                    itemCount: controller.entries.length,
+                    itemCount: _entries.length,
                   ),
                 );
               },

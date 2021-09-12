@@ -1,7 +1,7 @@
 library dotup_flutter_logger;
 
 export 'src/ILoggerController.dart';
-export 'src/ListStack.dart';
+export 'src/SizeLimitedList.dart';
 export 'src/LogLevelFilter.dart';
 export 'src/LoggerList.dart';
 export 'src/LoggerListController.dart';

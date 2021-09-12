@@ -33,3 +33,7 @@
 ## 0.3.2
 
 * LoggerScaffold AppBar
+
+## 0.4.0
+
+* 

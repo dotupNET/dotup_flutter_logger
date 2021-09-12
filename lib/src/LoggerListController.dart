@@ -1,7 +1,7 @@
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:flutter/widgets.dart';
 
-import 'ListStack.dart';
+import 'SizeLimitedList.dart';
 import 'LogLevelFilter.dart';
 
 typedef LogEntryReader = Future<List<LogEntry>> Function(int currentItemsCount, int parialItemsCount);
@@ -11,7 +11,7 @@ class LoggerListController with ChangeNotifier {
   LogLevel? _levelFilter;
   final LogEntryReader logEntryReader;
   final int pageSize;
-  late final ListStack<LogEntry> _entries;
+  late final SizeLimitedList<LogEntry> _entries;
   late final CallbackLogWriter logWriter;
 
   LoggerListController({
@@ -19,7 +19,7 @@ class LoggerListController with ChangeNotifier {
     required this.logEntryReader,
     this.pageSize = 50,
   }) {
-    _entries = ListStack(stackSize);
+    _entries = SizeLimitedList(size: stackSize, reverse: false);
     logWriter = CallbackLogWriter(LogLevel.All, (newEntry) {
       _entries.add(newEntry);
       if (liveMode) notifyListeners();
@@ -39,6 +39,7 @@ class LoggerListController with ChangeNotifier {
   List<LogEntry> get entries {
     final filter = _levelFilter ?? LogLevel.All;
     final filtered = _entries.where((element) => filter.isLevel(element.logLevel)).toList();
+    filtered.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
     return filtered;
   }
 
@@ -53,7 +54,7 @@ class LoggerListController with ChangeNotifier {
   void setFilter(List<LogLevelFilter> logLevelStates) {
     _levelFilter = logLevelStates
         .where(
-          (element) => element.state,
+          (element) => element.levelEnabled,
         )
         .map(
           (e) => e.value,
@@ -67,7 +68,7 @@ class LoggerListController with ChangeNotifier {
       },
     );
     logWriter.logLevel = _levelFilter!;
-    if (liveMode) notifyListeners();
+    notifyListeners();
   }
 
   @override
