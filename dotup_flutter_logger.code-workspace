@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../dotup_dart_logger"
+		},
+		{
+			"path": "../dotup_flutter_logger_sqflite"
+		}
+	],
+	"settings": {}
+}
