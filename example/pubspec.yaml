@@ -30,13 +30,13 @@ dependencies:
   dotup_flutter_logger:
     path: ../
   dotup_dart_logger: ^0.5.1
-  dotup_flutter_widgets: ^0.5.3
+  dotup_flutter_widgets: ^0.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   path_provider: ^2.0.2
-  provider: ^5.0.0
+  provider: ^6.0.0
 
 local_dependencies:
   flutter:
