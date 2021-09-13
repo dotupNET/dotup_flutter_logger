@@ -37,3 +37,7 @@
 ## 0.5.0
 
 * SQLite removed
+
+## 0.5.1
+
+* dotup_flutter_widgets: ^0.5.3

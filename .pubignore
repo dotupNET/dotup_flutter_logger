@@ -1,6 +1,10 @@
 screenshots
 docs
+/**/build
 .secret
 .secrets
-/**/build
 .env
+.vscode
+.idea
+.gitignore
+.pubignore

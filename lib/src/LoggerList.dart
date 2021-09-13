@@ -31,29 +31,6 @@ class _LoggerListState extends State<LoggerList> {
   Widget build(BuildContext context) {
     return ChangeNotifierConsumer<LoggerListController>(
       builder: (context, controller, child) {
-        // return RefreshIndicator(
-        //           onRefresh: () async => await controller.loadMore(),
-        //           child: ListView.separated(
-
-        //             physics: const AlwaysScrollableScrollPhysics(),
-        //             // controller: scrollController,
-        //             separatorBuilder: (context, index) {
-        //               return Divider(
-        //                 height: 1,
-        //                 color: Colors.grey.shade500,
-        //                 thickness: 1,
-        //               );
-        //             },
-        //             // dense:true,
-        //             padding: const EdgeInsets.all(0),
-        //             reverse: false,
-        //             shrinkWrap: false,
-        //             itemBuilder: (_, int index) {
-        //               return LoggerListTile(logEntry: controller.entries[index]);
-        //             },
-        //             itemCount: controller.entries.length,
-        //           ),
-        //         );
         return Stack(
           children: [
             if (isLoading == true) const LinearProgressIndicator(),
