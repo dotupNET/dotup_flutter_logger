@@ -41,3 +41,7 @@
 ## 0.5.1
 
 * dotup_flutter_widgets: ^0.5.3
+
+## 0.5.2
+
+* dotup_dart_logger: ^0.5.1
