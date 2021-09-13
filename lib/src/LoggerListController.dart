@@ -6,7 +6,7 @@ import 'LogLevelFilter.dart';
 import 'Utils.dart';
 
 class LoggerListController with ChangeNotifier {
-  bool liveMode = true;
+  late bool liveMode;
   LogLevel? _levelFilter;
   final LogEntryReader? logEntryReader;
   final int pageSize;
@@ -17,6 +17,7 @@ class LoggerListController with ChangeNotifier {
     required int stackSize,
     this.logEntryReader,
     this.pageSize = 50,
+    this.liveMode = false,
   }) {
     _entries = SizeLimitedList(size: stackSize, reverse: false);
     logWriter = CallbackLogWriter(LogLevel.All, (newEntry) {

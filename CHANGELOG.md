@@ -53,3 +53,7 @@
 ## 0.6.0
 
 * dotup_flutter_widgets: ^0.6.0
+
+## 0.6.1
+
+* LoggerListController with liveMode in constructor
