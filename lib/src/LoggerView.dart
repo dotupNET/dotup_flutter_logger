@@ -1,9 +1,8 @@
-import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:dotup_flutter_logger/src/LoggerList.dart';
 import 'package:dotup_flutter_logger/src/LoggerListController.dart';
 import 'package:flutter/material.dart';
 
-import 'LogLevelFilter.dart';
+import 'Utils.dart';
 
 class LoggerView extends StatefulWidget {
   late final LoggerListController loggerListController;

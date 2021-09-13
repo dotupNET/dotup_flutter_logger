@@ -3,20 +3,19 @@ import 'package:flutter/widgets.dart';
 
 import 'SizeLimitedList.dart';
 import 'LogLevelFilter.dart';
-
-typedef LogEntryReader = Future<List<LogEntry>> Function(int currentItemsCount, int parialItemsCount);
+import 'Utils.dart';
 
 class LoggerListController with ChangeNotifier {
   bool liveMode = true;
   LogLevel? _levelFilter;
-  final LogEntryReader logEntryReader;
+  final LogEntryReader? logEntryReader;
   final int pageSize;
   late final SizeLimitedList<LogEntry> _entries;
   late final CallbackLogWriter logWriter;
 
   LoggerListController({
     required int stackSize,
-    required this.logEntryReader,
+    this.logEntryReader,
     this.pageSize = 50,
   }) {
     _entries = SizeLimitedList(size: stackSize, reverse: false);
@@ -78,10 +77,10 @@ class LoggerListController with ChangeNotifier {
   }
 
   Future<void> loadMore() async {
-    if (liveMode == true) {
+    if (liveMode == true || logEntryReader == null) {
       return;
     }
-    final result = await logEntryReader(_entries.length, pageSize);
+    final result = await logEntryReader!(_entries.length, pageSize);
     if (result.isNotEmpty) {
       _entries.addAll(result);
       notifyListeners();

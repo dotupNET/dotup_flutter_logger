@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:dotup_flutter_logger/dotup_flutter_logger.dart';
+import 'package:dotup_flutter_logger/src/Utils.dart';
 import 'package:flutter/material.dart';
 
 late final ILogWriter sqfLiteLogWriter;
@@ -13,12 +12,18 @@ class LoggerScaffold extends StatefulWidget {
     Key? key,
     required this.title,
     this.appBar,
+    this.logEntryReader,
+    this.loggerListController,
   }) : super(key: key);
 
   final String title;
 
   final AppBar? appBar;
-  
+
+  final LogEntryReader? logEntryReader;
+
+  final LoggerListController? loggerListController;
+
   @override
   _LoggerScaffoldState createState() => _LoggerScaffoldState();
 }
@@ -30,7 +35,8 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
   @override
   void initState() {
     settings = null;
-    controller = LoggerListController(stackSize: 50, logEntryReader: logEntryReader);
+    controller =
+        widget.loggerListController ?? LoggerListController(stackSize: 50, logEntryReader: widget.logEntryReader);
     super.initState();
   }
 
@@ -41,13 +47,6 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
           AppBar(
             title: Text(widget.title),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.add),
-                tooltip: 'Add entry',
-                onPressed: () async {
-                  logger.debug('Debug');
-                },
-              ),
               IconButton(
                 icon: const Icon(Icons.settings),
                 tooltip: 'Einstellungen',
@@ -67,13 +66,12 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
           ),
       body: Column(
         children: [
-           Expanded(
-             flex: 1,
-             child: LoggerView(
-                loggerListController: controller,
-              ),
-           ),
-  
+          Expanded(
+            flex: 1,
+            child: LoggerView(
+              loggerListController: controller,
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -85,12 +83,5 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
         child: controller.liveMode ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
       ),
     );
-  }
-
-  Future<List<LogEntry>> logEntryReader(int currentItemsCount, int partialItemsCount) async {
-    final repo = SqfLiteLoggerManager.getLoggerRepository();
-    // sort asc because LimititedList is reversed !
-    final result = await repo.readPaged(skip: currentItemsCount, take: partialItemsCount, orderBy: 'timeStamp desc');
-    return result?.map((e) => LoggerMapper.toLogEntry(e)).toList() ?? [];
   }
 }

@@ -1,107 +1,166 @@
-import 'dart:async';
+import 'dart:math';
 
 import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:dotup_flutter_logger/dotup_flutter_logger.dart';
+import 'package:dotup_flutter_widgets/dotup_flutter_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+late final ILogWriter sqfLiteLogWriter;
+
+final logger = Logger('Logger demo');
 
 void main() {
-  final testLogger = Logger('test');
-  bool toggle = false;
-  final t = Timer.periodic(const Duration(seconds: 1), (_) {
-    toggle = !toggle;
-    testLogger.debug('Debug');
-    testLogger.error(UnimplementedError());
-    // testLogger.exception();
-    if (toggle) testLogger.info('INFO');
-    testLogger.warn('Holy');
-  });
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  LoggerManager.addLogWriter(ConsoleLogWriter(LogLevel.All, formater: PrettyFormater(showColors: true)));
+  runApp(const LoggerDemoProvider());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class LoggerDemoApp extends StatelessWidget {
+  const LoggerDemoApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'dotup.de Logger Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'dotup.de Logger Demo'),
+    logger.console('LoggerDemoApp build');
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'dotup.de Logger Demo',
+          theme: themeProvider.lightTheme,
+          darkTheme: themeProvider.darkTheme,
+          themeMode: themeProvider.themeMode,
+          home: LoggerDemoScaffold(),
+        );
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class LoggerDemoProvider extends StatelessWidget {
+  const LoggerDemoProvider({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    logger.console('LoggerDemoProvider build');
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) {
+            final themeProvider = ThemeProvider.defaultThemes();
+            themeProvider.switchTheme(false);
+            return themeProvider;
+          },
+        )
+      ],
+      child: const LoggerDemoApp(),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late final LoggerListController controller;
+class LoggerDemoScaffold extends StatefulWidget {
+  const LoggerDemoScaffold({Key? key}) : super(key: key);
+
+  @override
+  _LoggerDemoScaffoldState createState() => _LoggerDemoScaffoldState();
+}
+
+class _LoggerDemoScaffoldState extends State<LoggerDemoScaffold> {
+  late LoggerListController controller;
+  late LoggerListSettings settings;
 
   @override
   void initState() {
-    controller = LoggerListController(stackSize: 50, logEntryReader: logEntryReader);
     super.initState();
+    controller = LoggerListController(stackSize: 50);
+    settings = LoggerListSettings.standard();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
+    return LoggerScaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('dotup Logger'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            tooltip: 'Add entry',
+            onPressed: _createDemoEntry,
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Einstellungen',
+            onPressed: () async {
+              logger.info('Einstellungen geöffnet');
+              final newSettings = await Navigator.of(context).push<LoggerListSettings>(MaterialPageRoute(
+                builder: (context) => LoggerListSettingsPage(settings: settings),
+              ));
+
+              if (newSettings != null) {
+                controller.setFilter(newSettings.logLevelStates);
+                controller.stackSize = newSettings.pageSize;
+                settings = newSettings;
+                logger.info('Neue Einstellungen übernommen');
+              }
+            },
+          ),
+        ],
       ),
-      body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: LoggerView(
-        loggerListController: controller,
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await controller.setLiveMode(!controller.liveMode);
-          // setState(() {});
-        },
-        tooltip: 'Pause/Resume',
-        child: controller.liveMode ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      title: 'dotup Logger',
     );
   }
 
-  Future<List<LogEntry>> logEntryReader(int currentItemsCount, int parialItemsCount) async {
-    return [];
+  void _createDemoEntry() {
+    var random = Random(DateTime.now().microsecondsSinceEpoch);
+    var next = 1 << random.nextInt(LogLevel.values.length);
+    var nextLevel = LogLevel.fromValue(next);
+
+    switch (nextLevel) {
+      case LogLevel.Debug:
+        logger.debug("This is an debug entry. Disable debug entries if you're ready for production!",
+            source: 'SOURCE1');
+        break;
+
+      case LogLevel.Error:
+        logger.error(MyError("We've a problem!"));
+        break;
+
+      case LogLevel.Exception:
+        logger.exception(MyException('Well. It can happen..'));
+        break;
+
+      case LogLevel.Info:
+        logger.info("I think you've know this information.");
+        break;
+
+      case LogLevel.Warn:
+        logger.warn("Uuuh it's working. Maybe you can take a look at your source code why this happens so foten?");
+        break;
+
+      default:
+        logger.warn('nextLevel == ${nextLevel.name}');
+    }
+  }
+}
+
+class MyError extends Error {
+  final String message;
+  MyError(this.message);
+
+  @override
+  String toString() {
+    return message;
+  }
+}
+
+class MyException implements Exception {
+  final String? message;
+
+  MyException([this.message]);
+
+  @override
+  String toString() {
+    if (message == null) return 'Exception';
+    return 'Exception: $message';
   }
 }
