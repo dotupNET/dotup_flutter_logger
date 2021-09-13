@@ -45,3 +45,7 @@
 ## 0.5.2
 
 * dotup_dart_logger: ^0.5.1
+
+## 0.5.3
+
+* dotup_dart_logger: ^0.5.1
