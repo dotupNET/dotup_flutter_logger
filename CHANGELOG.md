@@ -61,3 +61,7 @@
 ## 0.6.2
 
 * LoggerListController: Future<void> loadMore({reset = false}) async
+
+## 0.6.3
+
+* dotup_dart_logger: ^0.6.0
