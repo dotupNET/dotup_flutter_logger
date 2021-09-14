@@ -35,6 +35,7 @@ class _LoggerListState extends State<LoggerList> {
           children: [
             if (isLoading == true) const LinearProgressIndicator(),
             InfiniteScrollFuture(
+              key: ValueKey(controller.entries.length),
               // scrollController: _scrollController,
               onReloadRequest: () async {
                 setState(() {
@@ -50,7 +51,7 @@ class _LoggerListState extends State<LoggerList> {
               builder: (context, scrollController) {
                 final _entries = controller.entries;
                 return RefreshIndicator(
-                  onRefresh: () async => await controller.loadMore(),
+                  onRefresh: () async => await controller.loadMore(reset: true),
                   child: ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
                     controller: scrollController,

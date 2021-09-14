@@ -57,3 +57,7 @@
 ## 0.6.1
 
 * LoggerListController with liveMode in constructor
+
+## 0.6.2
+
+* LoggerListController: Future<void> loadMore({reset = false}) async

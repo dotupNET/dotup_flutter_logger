@@ -77,10 +77,17 @@ class LoggerListController with ChangeNotifier {
     LoggerManager.removeLogWriter(logWriter);
   }
 
-  Future<void> loadMore() async {
+  Future<void> loadMore({reset = false}) async {
+    // Exit on live mode or if log entry provider is missing
     if (liveMode == true || logEntryReader == null) {
       return;
     }
+
+    // Remove already loaded entries. Usually with RefreshIndicator.
+    if (reset == true) {
+      _entries.clear();
+    }
+
     final result = await logEntryReader!(_entries.length, pageSize);
     if (result.isNotEmpty) {
       _entries.addAll(result);
