@@ -70,14 +70,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.6.3"
+    version: "0.7.0"
   dotup_flutter_widgets:
     dependency: "direct main"
     description:
       name: dotup_flutter_widgets
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0"
+    version: "0.7.0"
   fake_async:
     dependency: transitive
     description:

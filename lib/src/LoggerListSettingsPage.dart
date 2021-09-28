@@ -54,7 +54,7 @@ class _LoggerListSettingsPageState extends State<LoggerListSettingsPage> {
 
     final checkboxes = logLevelStates.map((e) {
       return SectionTile.checkbox(
-        text: e.value.name,
+        titleText: e.value.name,
         onChanged: (bool? value) {
           setState(() {
             e.levelEnabled = !e.levelEnabled;
@@ -89,7 +89,7 @@ class _LoggerListSettingsPageState extends State<LoggerListSettingsPage> {
               ),
               children: [
                 SectionTile.dropdownButton<int>(
-                  text: 'Anzahl Datensätze pro Seite',
+                  titleText: 'Anzahl Datensätze pro Seite',
                   color: color,
                   items: [10, 20, 50, 100, 200].map((int category) {
                     return category;
