@@ -65,3 +65,7 @@
 ## 0.6.3
 
 * dotup_dart_logger: ^0.6.0
+
+## 0.7.0
+
+* dotup_flutter_widgets: ^0.7.0
