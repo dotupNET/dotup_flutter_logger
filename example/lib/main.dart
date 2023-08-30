@@ -30,7 +30,7 @@ class LoggerDemoApp extends StatelessWidget {
           theme: themeProvider.lightTheme,
           darkTheme: themeProvider.darkTheme,
           themeMode: themeProvider.themeMode,
-          home: LoggerDemoScaffold(),
+          home: const LoggerDemoScaffold(),
         );
       },
     );
@@ -59,10 +59,10 @@ class LoggerDemoProvider extends StatelessWidget {
 }
 
 class LoggerDemoScaffold extends StatefulWidget {
-  const LoggerDemoScaffold({Key? key}) : super(key: key);
+  const LoggerDemoScaffold({super.key});
 
   @override
-  _LoggerDemoScaffoldState createState() => _LoggerDemoScaffoldState();
+  State<LoggerDemoScaffold> createState() => _LoggerDemoScaffoldState();
 }
 
 class _LoggerDemoScaffoldState extends State<LoggerDemoScaffold> {

@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 final _debugColor = Colors.grey.shade600; // AnsiEscape(foregroundColor: 15, italic: true);
 final _infoColor = Colors.blueAccent.shade400; // // AnsiEscape(foregroundColor: 81);
 final _warnColor = Colors.yellow.shade600; // AnsiEscape(foregroundColor: 208);
-final _errorColor = Colors.red; // AnsiEscape(foregroundColor: 196);
-final _exceptionColor = Colors.red; // AnsiEscape(backgroundColor: 196, foregroundColor: 15);
+const _errorColor = Colors.red; // AnsiEscape(foregroundColor: 196);
+const _exceptionColor = Colors.red; // AnsiEscape(backgroundColor: 196, foregroundColor: 15);
 
 class LoggerListTile extends StatelessWidget {
   final LogEntry logEntry;
@@ -20,11 +20,11 @@ class LoggerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).accentColor; // Colors.white70;
+    final color = Theme.of(context).colorScheme.secondary; // Colors.white70;
     // final theme = Provider.of<ThemeProvider>(context, listen: false);
     final ThemeData theme = Theme.of(context);
-    final subTitleStyle = theme.textTheme.subtitle1!.copyWith(fontSize: 10);
-    final titleStyle = theme.textTheme.bodyText2!; //.copyWith(color: Colors.white70);
+    final subTitleStyle = theme.textTheme.titleMedium!.copyWith(fontSize: 10);
+    final titleStyle = theme.textTheme.bodyMedium!; //.copyWith(color: Colors.white70);
 
     // final timeStamp = logEntry.timeStamp.toIso8601String().split('T').join(' ');
 
@@ -34,7 +34,7 @@ class LoggerListTile extends StatelessWidget {
       dense: true,
       isThreeLine: false,
       // contentPadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -99,60 +99,60 @@ class LoggerListTile extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () => print('tap'),
+      onTap: () => debugPrint('tap'),
     );
   }
 
-  Widget _getSubtitle(LogEntry logEntry) {
-    final source = "Source: ${logEntry.source ?? '--'}";
-    final time = logEntry.timeStamp.toIso8601String().split('T')[1];
-    return Column(
-      // mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 4),
-        _getSubtitleRow1('$time | $source'),
-        // SizedBox(height: 8),
-        // _getSubtitleRow2(context),
-      ],
-    );
-  }
+  // Widget _getSubtitle(LogEntry logEntry) {
+  //   final source = "Source: ${logEntry.source ?? '--'}";
+  //   final time = logEntry.timeStamp.toIso8601String().split('T')[1];
+  //   return Column(
+  //     // mainAxisAlignment: MainAxisAlignment.start,
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       const SizedBox(height: 4),
+  //       _getSubtitleRow1('$time | $source'),
+  //       // SizedBox(height: 8),
+  //       // _getSubtitleRow2(context),
+  //     ],
+  //   );
+  // }
 
-  Widget _getSubtitleRow1(String? subtitle) {
-    return Text(
-      subtitle ?? "",
-      textAlign: TextAlign.left,
-      overflow: TextOverflow.fade,
-      maxLines: 1,
-      softWrap: false,
-    );
-  }
+  // Widget _getSubtitleRow1(String? subtitle) {
+  //   return Text(
+  //     subtitle ?? "",
+  //     textAlign: TextAlign.left,
+  //     overflow: TextOverflow.fade,
+  //     maxLines: 1,
+  //     softWrap: false,
+  //   );
+  // }
 
-  Widget _getTitle(LogEntry logEntry) {
-    final title = '${logEntry.loggerName}: ${logEntry.message}';
-    return Text(
-      title,
-      textAlign: TextAlign.left,
-      overflow: TextOverflow.fade,
-      maxLines: 1,
-      softWrap: false,
-    );
-  }
+  // Widget _getTitle(LogEntry logEntry) {
+  //   final title = '${logEntry.loggerName}: ${logEntry.message}';
+  //   return Text(
+  //     title,
+  //     textAlign: TextAlign.left,
+  //     overflow: TextOverflow.fade,
+  //     maxLines: 1,
+  //     softWrap: false,
+  //   );
+  // }
 
   Icon getLogLevelIcon(LogEntry logEntry) {
     const size = 14.0;
     if (logEntry.logLevel == LogLevel.Debug) {
       return Icon(Icons.ac_unit, color: _debugColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Error) {
-      return Icon(Icons.error_outline, color: _errorColor, size: size);
+      return const Icon(Icons.error_outline, color: _errorColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Exception) {
-      return Icon(Icons.access_alarm, color: _exceptionColor, size: size);
+      return const Icon(Icons.access_alarm, color: _exceptionColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Info) {
       return Icon(Icons.info_outline, color: _infoColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Warn) {
       return Icon(Icons.warning_amber, color: _warnColor, size: size);
     } else {
-      return Icon(Icons.device_unknown_outlined, size: size);
+      return const Icon(Icons.device_unknown_outlined, size: size);
     }
   }
 
@@ -160,11 +160,11 @@ class LoggerListTile extends StatelessWidget {
     if (logEntry.logLevel == LogLevel.Debug) {
       return _debugColor;
     } else if (logEntry.logLevel == LogLevel.Error) {
-      return  _errorColor;
+      return _errorColor;
     } else if (logEntry.logLevel == LogLevel.Exception) {
-      return  _exceptionColor;
+      return _exceptionColor;
     } else if (logEntry.logLevel == LogLevel.Info) {
-      return  _infoColor;
+      return _infoColor;
     } else if (logEntry.logLevel == LogLevel.Warn) {
       return _warnColor;
     } else {

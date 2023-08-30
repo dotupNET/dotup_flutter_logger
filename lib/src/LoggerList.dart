@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'LoggerListController.dart';
 import 'LoggerListTile.dart';
-import 'LoggerRow.dart';
 
 class LoggerList extends StatefulWidget {
   final LoggerListController loggerListController;
@@ -49,7 +48,7 @@ class _LoggerListState extends State<LoggerList> {
                 }
               },
               builder: (context, scrollController) {
-                final _entries = controller.entries;
+                final entries = controller.entries;
                 return RefreshIndicator(
                   onRefresh: () async => await controller.loadMore(reset: true),
                   child: ListView.separated(
@@ -67,9 +66,9 @@ class _LoggerListState extends State<LoggerList> {
                     reverse: false,
                     shrinkWrap: false,
                     itemBuilder: (_, int index) {
-                      return LoggerListTile(logEntry: _entries[index]);
+                      return LoggerListTile(logEntry: entries[index]);
                     },
-                    itemCount: _entries.length,
+                    itemCount: entries.length,
                   ),
                 );
               },

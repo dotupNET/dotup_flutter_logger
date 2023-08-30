@@ -18,7 +18,7 @@ class LoggerView extends StatefulWidget {
   }
 
   @override
-  _LoggerViewState createState() => _LoggerViewState();
+  State<LoggerView> createState() => _LoggerViewState();
 }
 
 class _LoggerViewState extends State<LoggerView> {

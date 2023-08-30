@@ -1,23 +1,24 @@
 name: dotup_flutter_logger
 description: Flutter widgets to present dotup_dart_logger logs.
-version: 0.7.0
+version: 1.0.0
 homepage: https://dotup.de
 repository: https://github.com/dotupNET/dotup_flutter_logger
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
-  dotup_dart_logger: ^0.6.0
-  dotup_flutter_widgets: ^0.7.0
+  dotup_dart_logger: ^1.0.0
+  dotup_flutter_widgets: ^4.0.1
     
   flutter:
     sdk: flutter
-  intl: ^0.17.0
+
+  intl: ^0.18.1
 
 dev_dependencies:
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.3
   flutter_test:
     sdk: flutter
 

@@ -17,11 +17,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.2.0"
+  sdk: ">=2.18.0 <4.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -29,32 +29,18 @@ dependencies:
 
   dotup_flutter_logger:
     path: ../
-  dotup_dart_logger: ^0.6.0
-  dotup_flutter_widgets: ^0.7.0
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  path_provider: ^2.0.2
-  provider: ^6.0.0
+  dotup_dart_logger: ^1.0.0
+  dotup_flutter_widgets: ^4.0.1
+  provider: ^6.0.5
+  path_provider: ^2.1.0
 
 local_dependencies:
   flutter:
     sdk: flutter
 
-  dotup_flutter_logger:
-    path: ../
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  dotup_dart_logger: ^0.6.0
-  path_provider: ^2.0.2
-  dotup_flutter_widgets: ^0.5.2
-  provider: ^6.0.0
-
 dev_dependencies:
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.3
   flutter_test:
     sdk: flutter
 

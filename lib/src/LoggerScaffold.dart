@@ -25,7 +25,21 @@ class LoggerScaffold extends StatefulWidget {
   final LoggerListController? loggerListController;
 
   @override
-  _LoggerScaffoldState createState() => _LoggerScaffoldState();
+  State<LoggerScaffold> createState() => _LoggerScaffoldState();
+}
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }
 
 class _LoggerScaffoldState extends State<LoggerScaffold> {

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 final _debugColor = Colors.grey.shade900; // AnsiEscape(foregroundColor: 15, italic: true);
 final _infoColor = Colors.blueAccent.shade400; // // AnsiEscape(foregroundColor: 81);
 final _warnColor = Colors.yellow.shade600; // AnsiEscape(foregroundColor: 208);
-final _errorColor = Colors.red; // AnsiEscape(foregroundColor: 196);
-final _exceptionColor = Colors.red; // AnsiEscape(backgroundColor: 196, foregroundColor: 15);
+const _errorColor = Colors.red; // AnsiEscape(foregroundColor: 196);
+const _exceptionColor = Colors.red; // AnsiEscape(backgroundColor: 196, foregroundColor: 15);
 
 class LoggerRow extends StatelessWidget {
   final LogEntry logEntry;
 
-  LoggerRow({
+  const LoggerRow({
+    super.key,
     required this.logEntry,
   });
 
@@ -19,12 +20,12 @@ class LoggerRow extends StatelessWidget {
     return ListTile(
       // horizontalTitleGap: -10,
       dense: true,
-         contentPadding: EdgeInsets.symmetric(horizontal: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
       minLeadingWidth: 10,
       // contentPadding: EdgeInsets.only(left: 4, right: 4),
       leading: getLogLevelIcon(logEntry),
       title: _getTitle(logEntry),
-      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       subtitle: _getSubtitle(logEntry),
     );
   }
@@ -36,7 +37,7 @@ class LoggerRow extends StatelessWidget {
       // mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         _getSubtitleRow1('$time | $source'),
         // SizedBox(height: 8),
         // _getSubtitleRow2(context),
@@ -69,15 +70,15 @@ class LoggerRow extends StatelessWidget {
     if (logEntry.logLevel == LogLevel.Debug) {
       return Icon(Icons.ac_unit, color: _debugColor);
     } else if (logEntry.logLevel == LogLevel.Error) {
-      return Icon(Icons.error_outline, color: _errorColor);
+      return const Icon(Icons.error_outline, color: _errorColor);
     } else if (logEntry.logLevel == LogLevel.Exception) {
-      return Icon(Icons.access_alarm, color: _exceptionColor);
+      return const Icon(Icons.access_alarm, color: _exceptionColor);
     } else if (logEntry.logLevel == LogLevel.Info) {
       return Icon(Icons.info_outline, color: _infoColor);
     } else if (logEntry.logLevel == LogLevel.Warn) {
       return Icon(Icons.warning_amber, color: _warnColor);
     } else {
-      return Icon(Icons.device_unknown_outlined);
+      return const Icon(Icons.device_unknown_outlined);
     }
   }
 }
