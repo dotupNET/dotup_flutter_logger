@@ -14,6 +14,7 @@ class LoggerScaffold extends StatefulWidget {
     this.appBar,
     this.logEntryReader,
     this.loggerListController,
+    required this.onTap,
   }) : super(key: key);
 
   final String title;
@@ -23,6 +24,8 @@ class LoggerScaffold extends StatefulWidget {
   final LogEntryReader? logEntryReader;
 
   final LoggerListController? loggerListController;
+
+  final ValueSetter<LogEntry> onTap;
 
   @override
   State<LoggerScaffold> createState() => _LoggerScaffoldState();
@@ -84,6 +87,7 @@ class _LoggerScaffoldState extends State<LoggerScaffold> {
             flex: 1,
             child: LoggerView(
               loggerListController: controller,
+              onTap: widget.onTap,
             ),
           ),
         ],

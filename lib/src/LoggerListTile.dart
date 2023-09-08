@@ -12,10 +12,12 @@ class LoggerListTile extends StatelessWidget {
   final LogEntry logEntry;
   final DateFormat _dateFormat = DateFormat('dd.MM.yyyy');
   final DateFormat _timeFormat = DateFormat('HH:mm:ss.SSS');
+  final ValueSetter<LogEntry> onTap;
 
   LoggerListTile({
     Key? key,
     required this.logEntry,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class LoggerListTile extends StatelessWidget {
       dense: true,
       isThreeLine: false,
       // contentPadding: EdgeInsets.zero,
+      leading: getLogLevelIcon(logEntry),
       contentPadding: const EdgeInsets.symmetric(horizontal: 10),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +74,7 @@ class LoggerListTile extends StatelessWidget {
                   const SizedBox(
                     width: 4,
                   ),
-                  getLogLevelIcon(logEntry),
+                  // getLogLevelIcon(logEntry, size: 14),
                 ],
               ),
               // Chip(
@@ -99,7 +102,7 @@ class LoggerListTile extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () => debugPrint('tap'),
+      onTap: onTap == null ? null : () => onTap(logEntry),
     );
   }
 
@@ -139,20 +142,19 @@ class LoggerListTile extends StatelessWidget {
   //   );
   // }
 
-  Icon getLogLevelIcon(LogEntry logEntry) {
-    const size = 14.0;
+  Icon getLogLevelIcon(LogEntry logEntry, {double? size}) {
     if (logEntry.logLevel == LogLevel.Debug) {
       return Icon(Icons.ac_unit, color: _debugColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Error) {
-      return const Icon(Icons.error_outline, color: _errorColor, size: size);
+      return Icon(Icons.error_outline, color: _errorColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Exception) {
-      return const Icon(Icons.access_alarm, color: _exceptionColor, size: size);
+      return Icon(Icons.access_alarm, color: _exceptionColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Info) {
       return Icon(Icons.info_outline, color: _infoColor, size: size);
     } else if (logEntry.logLevel == LogLevel.Warn) {
       return Icon(Icons.warning_amber, color: _warnColor, size: size);
     } else {
-      return const Icon(Icons.device_unknown_outlined, size: size);
+      return Icon(Icons.device_unknown_outlined, size: size);
     }
   }
 

@@ -107,6 +107,7 @@ class _LoggerDemoScaffoldState extends State<LoggerDemoScaffold> {
         ],
       ),
       title: 'dotup Logger',
+      onTap: (value) => print(value.toString()),
     );
   }
 

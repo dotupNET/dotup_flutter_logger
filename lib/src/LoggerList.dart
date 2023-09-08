@@ -1,3 +1,4 @@
+import 'package:dotup_dart_logger/dotup_dart_logger.dart';
 import 'package:dotup_flutter_widgets/dotup_flutter_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +7,12 @@ import 'LoggerListTile.dart';
 
 class LoggerList extends StatefulWidget {
   final LoggerListController loggerListController;
+  final ValueSetter<LogEntry> onTap;
 
   const LoggerList({
     Key? key,
     required this.loggerListController,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -66,7 +69,10 @@ class _LoggerListState extends State<LoggerList> {
                     reverse: false,
                     shrinkWrap: false,
                     itemBuilder: (_, int index) {
-                      return LoggerListTile(logEntry: entries[index]);
+                      return LoggerListTile(
+                        logEntry: entries[index],
+                        onTap: widget.onTap,
+                      );
                     },
                     itemCount: entries.length,
                   ),
