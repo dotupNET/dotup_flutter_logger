@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   dotup_dart_logger: ^1.0.0
-  dotup_flutter_widgets: ^4.0.1
+  dotup_flutter_widgets: ^4.0.3
     
   flutter:
     sdk: flutter
